@@ -11,6 +11,10 @@ const filesLocation = path.join(__dirname, "files")
 
 
 const getDirectoryContent = (dirPath) => {
+    // Check for content 
+    // Loop trough content and see if it is a file or another directory
+    // Repeat for every sub directory
+    // Return the file structure as JSON for the frontend.
 }
 
 // API
