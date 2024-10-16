@@ -1,27 +1,20 @@
-// Import Express and initialize it.
-const express = require("express")
-const app = express()
+require("dotenv").config()
 
-// Import path and file utils
+const app = require("express")()
 const fileUtils = require("./utils/fileUtils")
 const path = require("path")
 
-const fs = require("fs")
-
-// Customizable user configuration
-const hostconfig = require("./hostconfig.json")
-const filesPath = path.join(__dirname, hostconfig.folderPathToServeFrom)
-
-
+const filePath = path.join(__dirname, process.env.FOLDER_FROM_PATH_TO_SERVE)
 
 // API
 app.get("/", (_, res) => {
-    const test = fileUtils.getDirectoryContent(filesPath)
+    const test = fileUtils.getDirectoryContent(filePath)
     res.send(test)
 })
 
-fileUtils.validateExistensOfDirectory(filesPath)
+fileUtils.validateExistensOfDirectory(filePath)
 
-app.listen(hostconfig.port, hostconfig.hostname, () => {
-    console.log(`LocalFileSharing: Backend-Server listening at http://${hostconfig.hostname}:${hostconfig.port} ...`)
+app.listen(process.env.PORT, process.env.HOSTNAME, () => {
+    console.log(`LocalFileSharing: Backend-Server listening at ${process.env.HOSTNAME}:${process.env.PORT}`)
+    console.log(filePath)
 })
