@@ -17,8 +17,8 @@ class FileUtils {
     const content = fs.readdirSync(dir).map((file) => {
       const fullPath = path.join(dir, file);
 
-      // Converted to MB
-      const size = fs.statSync(fullPath).size / 1048578;
+      // Better pass full bytes and convert it @Frontend
+      const size = fs.statSync(fullPath).size;
 
       return fs.statSync(fullPath).isDirectory()
         ? {

@@ -3,14 +3,23 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+// const path = require("path");
 const fileUtils = require("./utils/fileUtils");
 const customConsole = require("./utils/customConsole");
 
 // API
-
+/*
 app.get("/", (_, res) => {
-  const test = fileUtils.getDirectoryContent();
-  res.send(test);
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+*/
+
+app.get("/files", (_, res) => {
+  const content = fileUtils.getDirectoryContent();
+
+  content.length === 0
+    ? res.send({ message: "Directory has no content!" })
+    : res.send(content);
 });
 
 fileUtils.validateExistensOfDirectory();
