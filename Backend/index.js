@@ -13,7 +13,7 @@ app.get("/", (_, res) => {
   res.send(test);
 });
 
-// fileUtils.validateExistensOfDirectory();
+fileUtils.validateExistensOfDirectory();
 
 app.listen(
   process.env.PORT | 3000,
@@ -21,10 +21,6 @@ app.listen(
   function () {
     customConsole.warn(
       `Server started! Listening at http://${process.env.HOSTNAME}:${process.env.PORT}`
-    );
-
-    customConsole.warn(
-      `Name of shared folder (Uploading/Downloading): ${process.env.FOLDERNAME}/`
     );
   }
 );

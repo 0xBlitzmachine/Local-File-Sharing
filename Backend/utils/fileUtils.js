@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 class FileUtils {
+  // Read the .env file and decide the path to use.
   static #FILES_PATH = function () {
     switch (process.env.SERVE_FROM_ROOT) {
       case "true":
@@ -22,21 +23,23 @@ class FileUtils {
       return fs.statSync(fullPath).isDirectory()
         ? {
             name: file,
-            type: "directory",
+            type: "Directory",
             size: size,
             fullpath: fullPath,
             content: this.getDirectoryContent(fullPath),
           }
-        : { name: file, type: "file", size: size, fullpath: fullPath };
+        : { name: file, type: "File", size: size, fullpath: fullPath };
     });
 
     return content;
   }
 
+  // When using your own entire Path like /User/blitz/Downloads and you add a not existing path to it,
+  // it will create those folders.
   static validateExistensOfDirectory() {
     try {
-      if (!fs.existsSync(FileUtils.#FILES_PATH)) {
-        fs.mkdir(FileUtils.#FILES_PATH, { recursive: true }, (err) => {
+      if (!fs.existsSync(FileUtils.#FILES_PATH())) {
+        fs.mkdir(FileUtils.#FILES_PATH(), { recursive: true }, (err) => {
           if (err) throw err;
         });
         customConsole.warn("Set directory not found! Creating new one.");
