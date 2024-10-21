@@ -9,9 +9,7 @@ const customConsole = require("./utils/customConsole");
 // API
 
 app.get("/", (_, res) => {
-  const test = fileUtils.getDirectoryContent(
-    process.env.FULL_PATH_TO_SERVE_FROM
-  );
+  const test = fileUtils.getDirectoryContent();
   res.send(test);
 });
 

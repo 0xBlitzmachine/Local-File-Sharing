@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 class FileUtils {
-  static #FILES_PATH = () => {
+  static #FILES_PATH = function () {
     switch (process.env.SERVE_FROM_ROOT) {
       case "true":
         return path.join(__dirname, "..", process.env.FOLDERNAME);
@@ -12,7 +12,7 @@ class FileUtils {
     }
   };
 
-  static getDirectoryContent(dir = FileUtils.#FILES_PATH) {
+  static getDirectoryContent(dir = FileUtils.#FILES_PATH()) {
     const content = fs.readdirSync(dir).map((file) => {
       const fullPath = path.join(dir, file);
 
@@ -23,9 +23,11 @@ class FileUtils {
         ? {
             name: file,
             type: "directory",
+            size: size,
+            fullpath: fullPath,
             content: this.getDirectoryContent(fullPath),
           }
-        : { name: file, type: "file", size: size };
+        : { name: file, type: "file", size: size, fullpath: fullPath };
     });
 
     return content;
