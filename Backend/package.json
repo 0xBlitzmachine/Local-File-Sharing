@@ -4,7 +4,7 @@
   "description": "An API that is powered by ExpressJS to serve the local file sharing for the frontend.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": ""
   },
   "keywords": [],
   "author": "Blitzmachine",

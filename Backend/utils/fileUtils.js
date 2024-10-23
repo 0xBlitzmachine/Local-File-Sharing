@@ -5,33 +5,34 @@ const path = require("path");
 class FileUtils {
   // Read the .env file and decide the path to use.
   static #FILES_PATH = function () {
-    switch (process.env.SERVE_FROM_ROOT) {
-      case "true":
-        return path.join(__dirname, "..", process.env.FOLDERNAME);
-      default:
-        return process.env.FULL_PATH_TO_SERVE_FROM;
-    }
+    return process.env.SERVE_FROM_ROOT
+      ? process.env.FULL_PATH_TO_SERVE_FROM
+      : path.join(__dirname, "..", process.env.FOLDERNAME);
   };
 
   static getDirectoryContent(dir = FileUtils.#FILES_PATH()) {
-    const content = fs.readdirSync(dir).map((file) => {
-      const fullPath = path.join(dir, file);
+    try {
+      const content = fs.readdirSync(dir).map((file) => {
+        const fullPath = path.join(dir, file);
 
-      // Better pass full bytes and convert it @Frontend
-      const size = fs.statSync(fullPath).size;
+        // Better pass full bytes and convert it @Frontend
+        const size = fs.statSync(fullPath).size;
 
-      return fs.statSync(fullPath).isDirectory()
-        ? {
-            name: file,
-            type: "Directory",
-            size: size,
-            fullpath: fullPath,
-            content: this.getDirectoryContent(fullPath),
-          }
-        : { name: file, type: "File", size: size, fullpath: fullPath };
-    });
-
-    return content;
+        return fs.statSync(fullPath).isDirectory()
+          ? {
+              name: file,
+              type: "Directory",
+              size: size,
+              fullpath: fullPath,
+              content: this.getDirectoryContent(fullPath),
+            }
+          : { name: file, type: "File", size: size, fullpath: fullPath };
+      });
+      return content;
+    } catch (err) {
+      customConsole.error(err);
+      return [];
+    }
   }
 
   // When using your own entire Path like /User/blitz/Downloads and you add a not existing path to it,
@@ -39,13 +40,16 @@ class FileUtils {
   static validateExistensOfDirectory() {
     try {
       if (!fs.existsSync(FileUtils.#FILES_PATH())) {
-        fs.mkdir(FileUtils.#FILES_PATH(), { recursive: true }, (err) => {
+        fs.mkdirSync(FileUtils.#FILES_PATH(), { recursive: true }, (err) => {
           if (err) throw err;
+          return true;
         });
         customConsole.warn("Set directory not found! Creating new one.");
+        return true;
       }
     } catch (err) {
       customConsole.error(err);
+      return false;
     }
   }
 }

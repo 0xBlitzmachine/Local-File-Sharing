@@ -1,7 +1,6 @@
 require("dotenv").config();
 
-const express = require("express");
-const app = express();
+const app = require("express")();
 
 // const path = require("path");
 const fileUtils = require("./utils/fileUtils");
