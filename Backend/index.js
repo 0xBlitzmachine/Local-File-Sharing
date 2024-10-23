@@ -16,9 +16,15 @@ app.get("/", (_, res) => {
 app.get("/files", (_, res) => {
   const content = fileUtils.getDirectoryContent();
 
-  content.length === 0
-    ? res.send({ message: "Directory has no content!" })
-    : res.send(content);
+  if (!content) {
+    res.send({ message: "Content is null. Check console for error." });
+    return;
+  } else if (content.length === 0) {
+    res.send({ message: "Directory has no content!" });
+    return;
+  }
+
+  res.send(content);
 });
 
 fileUtils.validateExistensOfDirectory();
@@ -28,7 +34,7 @@ app.listen(
   process.env.HOSTNAME | "0.0.0.0",
   function () {
     customConsole.warn(
-      `Server started! Listening at http://${process.env.HOSTNAME}:${process.env.PORT}`
+      `Server started! Listening at http://${process.env.HOSTNAME}:${process.env.PORT}/files`
     );
   }
 );

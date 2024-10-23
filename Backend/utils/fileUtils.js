@@ -6,8 +6,8 @@ class FileUtils {
   // Read the .env file and decide the path to use.
   static #FILES_PATH = function () {
     return process.env.SERVE_FROM_ROOT
-      ? process.env.FULL_PATH_TO_SERVE_FROM
-      : path.join(__dirname, "..", process.env.FOLDERNAME);
+      ? path.join(__dirname, "..", process.env.FOLDERNAME)
+      : process.env.FULL_PATH_TO_SERVE_FROM;
   };
 
   static getDirectoryContent(dir = FileUtils.#FILES_PATH()) {
@@ -31,7 +31,7 @@ class FileUtils {
       return content;
     } catch (err) {
       customConsole.error(err);
-      return [];
+      return null;
     }
   }
 
@@ -42,9 +42,9 @@ class FileUtils {
       if (!fs.existsSync(FileUtils.#FILES_PATH())) {
         fs.mkdirSync(FileUtils.#FILES_PATH(), { recursive: true }, (err) => {
           if (err) throw err;
+          customConsole.warn("Set directory not found! Creating new one.");
           return true;
         });
-        customConsole.warn("Set directory not found! Creating new one.");
         return true;
       }
     } catch (err) {
