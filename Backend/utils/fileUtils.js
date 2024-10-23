@@ -20,12 +20,12 @@ class FileUtils {
 
         return fs.statSync(fullPath).isDirectory()
           ? {
-              name: file,
-              type: "Directory",
-              size: size,
-              fullpath: fullPath,
-              content: this.getDirectoryContent(fullPath),
-            }
+            name: file,
+            type: "Directory",
+            size: size,
+            fullpath: fullPath,
+            content: this.getDirectoryContent(fullPath),
+          }
           : { name: file, type: "File", size: size, fullpath: fullPath };
       });
       return content;
