@@ -45,8 +45,8 @@ class FileUtils {
           customConsole.warn("Set directory not found! Creating new one.");
           return true;
         });
-        return true;
       }
+      return true;
     } catch (err) {
       customConsole.error(err);
       return false;

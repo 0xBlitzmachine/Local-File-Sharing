@@ -27,14 +27,14 @@ app.get("/files", (_, res) => {
   res.send(content);
 });
 
-fileUtils.validateExistensOfDirectory();
-
-app.listen(
-  process.env.PORT | 3000,
-  process.env.HOSTNAME | "0.0.0.0",
-  function () {
-    customConsole.warn(
-      `Server started! Listening at http://${process.env.HOSTNAME}:${process.env.PORT}/files`
-    );
-  }
-);
+if (fileUtils.validateExistensOfDirectory()) {
+  app.listen(
+    process.env.PORT | 3000,
+    process.env.HOSTNAME | "0.0.0.0",
+    function () {
+      customConsole.warn(
+        `Server started! Listening at http://${process.env.HOSTNAME}:${process.env.PORT}/files`
+      );
+    }
+  );
+}
