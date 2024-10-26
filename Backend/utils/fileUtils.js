@@ -10,7 +10,10 @@ class FileUtils {
       : process.env.FULL_PATH_TO_SERVE_FROM;
   };
 
-  static getDirectoryContent(dir = FileUtils.#FILES_PATH()) {
+  static isServingFromRoot = process.env.SERVE_FROM_ROOT === "true" ? true : false
+  static filesPath = FileUtils.#FILES_PATH()
+
+  static getDirectoryContent(dir = this.filesPath) {
     try {
       const content = fs.readdirSync(dir).map((file) => {
         const fullPath = path.join(dir, file);
@@ -39,8 +42,8 @@ class FileUtils {
   // it will create those folders.
   static validateExistensOfDirectory() {
     try {
-      if (!fs.existsSync(FileUtils.#FILES_PATH())) {
-        fs.mkdirSync(FileUtils.#FILES_PATH(), { recursive: true }, (err) => {
+      if (!fs.existsSync(this.filesPath)) {
+        fs.mkdirSync(this.filesPath, { recursive: true }, (err) => {
           if (err) throw err;
           customConsole.warn("Set directory not found! Creating new one.");
           return true;
